@@ -28,12 +28,17 @@ gradSchemes
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss linear;
-    div(phiB,U)     Gauss linear;
-    div(phi,B)      Gauss linear;
-    div(phiB,((2*DBU)*B)) Gauss linear;
-    // required by turbulence->divDevReff(U) in the turbulent MHD solver
-    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+   div(phi,U)      Gauss linear; ///
+   // div(phiB,U)     Gauss linear;
+   // div(phi,B)      Gauss linear;
+   // div(phiB,((2*DBU)*B)) Gauss linear;
+
+	div(phiB,U) Gauss linear; ///Gauss limitedLinear 1;
+	div(phi,B) Gauss linear; ///Gauss limitedLinear 1;
+	div(phi,nuTilda) Gauss linear; ///Gauss limitedLinear 1;
+	div(phiB,((2*DBU)*B)) Gauss linear;
+	div((nuEff*dev2(T(grad(U))))) Gauss linear;
+
 }
 
 laplacianSchemes
@@ -49,6 +54,11 @@ interpolationSchemes
 snGradSchemes
 {
     default         corrected;
+}
+
+wallDist
+{
+    method meshWave;
 }
 
 // ************************************************************************* //

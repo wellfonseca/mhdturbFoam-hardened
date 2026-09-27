@@ -69,9 +69,9 @@ mhdturbFoam-hardened/
 │   ├── magneticFieldErr.H      div(B) diagnostic
 │   ├── readBPISOControls.H     BPISO helpers
 │   └── Make/                   wmake files
-├── cases/                      verification, with analytical metrics
-│   ├── channelHartmann/        2D Hartmann channel, transverse B = (0 20 0)
-│   ├── channelHartmannSpanwise/ same mesh, spanwise B = (0 0 -20)
+├── cases/                      verification, with objective metrics
+│   ├── channelHartmann/        upstream reference case: SA Cv1=30, B = (0 8 0)
+│   ├── channelHartmannSpanwise/ same, spanwise B = (0 0 -8)
 │   └── channelHartmannPeriodic/ streamwise-periodic, force-driven (fvOptions)
 ├── examples/                   integration/smoke tests, no exact solution
 │   └── swirlDuctCoarse/        polygonal duct, k-omega SST, B = (0 0 -10), ~30 s
@@ -116,18 +116,31 @@ cd cases/channelHartmann
 All cases use the geometry and boundary-condition layout of the standard
 OpenFOAM 6 `mhdFoam` tutorial `electromagnetics/mhdFoam/hartmann` (channel
 $0 \le x \le 20$, $-1 \le y \le 1$, $0 \le z \le 0.1$, mesh $100\times40\times1$,
-4000 cells), adapted to the turbulent solver:
+4000 cells, patches `inlet`/`outlet`/`lowerWall`/`upperWall`/`frontAndBack`),
+the same geometry as the upstream `mhdturbFoam` reference case:
 
-| case | `B` | driving | exercises |
-|---|---|---|---|
-| `channelHartmann` | `(0 20 0)` transverse | inlet/outlet pressure | fixes 1 |
-| `channelHartmannSpanwise` | `(0 0 -20)` spanwise | inlet/outlet pressure | fix 1 |
-| `channelHartmannPeriodic` | `(0 20 0)` transverse | `meanVelocityForce` | fixes 1, 2 and 3 |
+| case | turbulence | `B` | driving | steps |
+|---|---|---|---|---|
+| `channelHartmann` | **RAS Spalart–Allmaras, `Cv1 30`** | `(0 8 0)` transverse | inlet/outlet pressure | 1000 |
+| `channelHartmannSpanwise` | **RAS Spalart–Allmaras, `Cv1 30`** | `(0 0 -8)` spanwise | inlet/outlet pressure | 1000 |
+| `channelHartmannPeriodic` | laminar | `(0 8 0)` transverse | `meanVelocityForce` | 5000 |
 
-The flow is kept **laminar** in these cases (`constant/turbulenceProperties`,
-`simulationType laminar`), so they isolate the numerics of the solver. Set
-`simulationType RAS` with a `RASProperties` dictionary to use a turbulence
-closure; Spalart–Allmaras, k-epsilon and k-omega SST all work unchanged.
+`channelHartmann` is a **faithful reproduction of the upstream reference
+case**: same mesh, same `SpalartAllmaras` closure with the MHD-modified
+coefficient `Cv1 30` recommended by Dietiker & Hoffmann (2003), same fields
+(`nut`, `nuTilda`), same `B = (0 8 0)`, same `endTime 1` with `dt 0.001`.
+The `nutkWallFunction` requires the walls to be of patch type `wall`, so
+`system/blockMeshDict` declares `lowerWall`/`upperWall` as `type wall;` —
+matching the patch types of the upstream `polyMesh`.
+
+The periodic case is deliberately kept laminar: its purpose is to exercise the
+`pB` reference-level fix and the `fvOptions` coupling, and laminar keeps those
+5000 steps under a minute.
+
+Turbulence closures are standard OpenFOAM models used unchanged; the MHD
+modification of Spalart–Allmaras is a **coefficient** set in the case
+dictionary (`Cv1`), not a change to the model code. Spalart–Allmaras,
+k-epsilon and k-omega SST all work.
 
 ## Verification
 
@@ -137,16 +150,15 @@ without floating-point errors:
 
 | case | exit | steps | reached `End` | max continuity error | max magnetic flux divergence error | max final p residual | s |
 |---|---|---|---|---|---|---|---|
-| channelHartmann | 0 | 400 | 1 | 9.99926e-10 | 9.8377e-10 | 9.99771e-07 | 9 |
-| channelHartmannSpanwise | 0 | 400 | 1 | 9.99795e-08 | 0 | 9.99957e-07 | 6 |
-| channelHartmannPeriodic | 0 | 5000 | 1 | 9.99946e-13 | 9.82596e-12 | 9.99981e-07 | 60 |
+| channelHartmann | 0 | 1000 | 1 | 9.99335e-11 | 9.99608e-11 | 9.99636e-07 | 13 |
+| channelHartmannSpanwise | 0 | 1000 | 1 | 9.99619e-12 | 0 | 9.99402e-07 | 10 |
+| channelHartmannPeriodic | 0 | 5000 | 1 | 9.9951e-10 | 9.66615e-13 | 9.99939e-07 | 45 |
 
 `cases/` is verification: each case has an objective metric. `examples/` is
 different — those are integration/smoke tests with no exact solution, kept out
-of `verify.sh` on purpose. `examples/swirlDuctCoarse` exercises what the
-analytical cases cannot: a **RAS turbulence model** (k-omega SST through
-`turbulence->divDevReff`), the `swirlFlowRateInletVelocity` inlet and the
-polygonal duct wall. It runs in ~30 s serial and is documented in its own
+of `verify.sh` on purpose. `examples/swirlDuctCoarse` adds a **k-omega SST**
+closure, the `swirlFlowRateInletVelocity` inlet and the polygonal duct wall.
+It runs in ~30 s serial and is documented in its own
 [`README`](examples/swirlDuctCoarse/README.md).
 
 ## Limitations

@@ -8,16 +8,17 @@ It has **no exact solution** and must not be cited as verification.
 
 | aspect | `cases/channelHartmann*` | `examples/swirlDuctCoarse` |
 |---|---|---|
-| turbulence model | laminar | **k-omega SST** (`turbulence->divDevReff`) |
-| applied field `B` | transverse or spanwise | **spanwise `(0 0 -10)`** |
+| turbulence model | Spalart–Allmaras (`Cv1 30`) | **k-omega SST** (`turbulence->divDevReff`) |
+| applied field `B` | transverse `(0 8 0)` or spanwise `(0 0 -8)` | **spanwise `(0 0 -10)`** |
 | inlet | uniform `(1 0 0)` | **`swirlFlowRateInletVelocity`**, 0.5 m3/s at 100 rpm |
 | geometry | Cartesian channel | **60-sided polygonal duct** (STL + snappyHexMesh) |
 | patches | inlet/outlet/walls | inlet/outlet/`wall` |
-| purpose | verification against exact solution | integration / divergence check |
+| purpose | objective numerical metrics | integration / divergence check |
 
-This matters because the solver exists to be turbulent: a bug in the
-`divDevReff` + RAS path, or an instability specific to the swirl inlet, would
-not be caught by the laminar verification cases.
+This matters because the solver exists to be turbulent: the k-omega SST closure
+and the `swirlFlowRateInletVelocity` inlet are exercised nowhere else in the
+package, so a bug or instability specific to them would not be caught by the
+channel cases.
 
 ## Geometry and settings
 

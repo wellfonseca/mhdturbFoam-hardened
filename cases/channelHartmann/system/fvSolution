@@ -19,7 +19,8 @@ solvers
 {
     p
     {
-        solver          PCG;
+        solver          GAMG;
+        smoother        GaussSeidel;
         preconditioner  DIC;
         tolerance       1e-06;
         relTol          0.05;
@@ -44,10 +45,10 @@ solvers
         relTol          0;
     }
 
-    "(U|B)"
+    "(U|B|nuTilda)"   /// "(U|B)"
     {
         solver          smoothSolver;
-        smoother        symGaussSeidel;
+        smoother        GaussSeidel; ///symGaussSeidel;
         tolerance       1e-05;
         relTol          0;
     }
@@ -62,12 +63,6 @@ PISO
 BPISO
 {
     nCorrectors     3;
-
-    // Reference level for the singular pB Poisson problem.  Only needed
-    // when every pB boundary is zeroGradient or cyclic (closed or fully
-    // periodic domain); harmless otherwise.
-    // pBRefCell    0;
-    // pBRefValue   0;
 }
 
 

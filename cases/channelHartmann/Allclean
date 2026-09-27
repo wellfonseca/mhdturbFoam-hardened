@@ -1,10 +1,18 @@
 #!/bin/sh
-cd ${0%/*} || exit 1    # Run from this directory
-
-# Source tutorial clean functions
-. $WM_PROJECT_DIR/bin/tools/CleanFunctions
-
-cleanCase
-cleanSamples
+cd "${0%/*}" || exit 1
 
 #------------------------------------------------------------------------------
+# Allclean - channelHartmann
+#
+# Removes the generated mesh, the written times, postProcessing and the logs.
+#------------------------------------------------------------------------------
+
+echo "Allclean: removendo malha, tempos, postProcessing e log.*"
+
+rm -rf constant/polyMesh
+rm -rf postProcessing
+rm -rf processor*
+rm -f  log.* time.txt
+rm -rf [1-9]* [0-9]*.[0-9]*
+
+ls

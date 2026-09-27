@@ -44,7 +44,7 @@ reduced by the number of iterations), while the hardened code reaches the
 `pFinal` tolerance `1e-6`:
 
 ```
-max final pressure residual, hardened  : 9.99771e-07
+max final pressure residual, hardened  : 9.99636e-07
 ```
 
 On the periodic channel of the companion investigation the same defect made the
@@ -193,7 +193,9 @@ constant pressure gradient.
   `createControl.H`, `readBPISOControls.H`.
 * The `createFields.H` of the upstream derivative (transport, turbulence,
   `fvOptions`).
-* No magnetic modification is applied to the turbulence closures. The upstream
-  `README.md` recommends a modified Spalart–Allmaras model for MHD; that
-  recommendation is **not** implemented here, and the standard OpenFOAM
-  closures are used unmodified.
+* No turbulence **closure code** is modified. The MHD modification of
+  Spalart–Allmaras recommended by the upstream `README.md` (Dietiker &
+  Hoffmann, 2003) is applied the way upstream applied it: as a **coefficient**
+  in the case dictionary, `Cv1 30` in `SpalartAllmarasCoeffs`, on top of the
+  OpenFOAM default `Cv1 7.1`. The `channelHartmann` case of this package
+  reproduces it. The standard OpenFOAM closures themselves are used unmodified.

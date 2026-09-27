@@ -1,14 +1,29 @@
 #!/bin/sh
-cd ${0%/*} || exit 1    # Run from this directory
-
-# Source tutorial run functions
-. $WM_PROJECT_DIR/bin/tools/RunFunctions
-
-# Set application name
-application=$(getApplication)
-
-runApplication blockMesh
-runApplication $application
-runApplication -s sample  postProcess -func sample
+cd "${0%/*}" || exit 1
 
 #------------------------------------------------------------------------------
+# Allrun - channelHartmann
+#
+# Faithful reproduction of the upstream FOSSEE mhdturbFoam reference case:
+# the OpenFOAM 6 mhdFoam 'hartmann' tutorial geometry (100x40x1 = 4000 cells,
+# channel 0<=x<=20, -1<=y<=1, 0<=z<=0.1) solved with turbulence ON --
+# RAS SpalartAllmaras with the MHD-modified coefficient Cv1 = 30
+# (Dietiker & Hoffmann, 2003), B = (0 8 0) transverse.
+#
+# Source the OpenFOAM 6 environment before running.
+#------------------------------------------------------------------------------
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+APP=$(foamDictionary -entry application -value system/controlDict)
+
+echo "Allrun: $APP | channelHartmann (SpalartAllmaras, Cv1 = 30)"
+
+if ! command -v "$APP" > /dev/null 2>&1; then
+    echo "ERRO: solver '$APP' nao esta no PATH. Carregue o ambiente do OpenFOAM." ; exit 1
+fi
+
+runApplication blockMesh
+runApplication $APP
+
+echo "Allrun concluido: $APP."

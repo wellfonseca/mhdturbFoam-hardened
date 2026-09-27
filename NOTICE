@@ -54,8 +54,14 @@ corrections listed in `README.md` and detailed in `docs/corrections.md`:
 3. `fvOptions` coupling (`fvOptions(U)` and `fvOptions.constrain(UEqn)`) in the
    momentum equation.
 
-Plus the packaging: build files, three verification cases, the verification
-script and this documentation.
+Plus the packaging: build files, three verification cases, an integration
+example, the verification script and this documentation.
+
+The `channelHartmann` case is a faithful reproduction of the upstream
+`mhdturbFoam_model` reference case, including the MHD-modified
+Spalart–Allmaras coefficient `Cv1 30` (OpenFOAM default `7.1`) recommended by
+Dietiker & Hoffmann (2003) and cited in the upstream `README.md`. That
+modification is a dictionary coefficient, not a change to the model code.
 
 ## 4. Related solver
 

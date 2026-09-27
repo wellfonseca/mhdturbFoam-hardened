@@ -30,7 +30,7 @@ run_one() {
 
     (
         cd "$d" || exit 1
-        rm -rf 1 2 3 4 5 6 7 8 9 10 postProcessing polyMesh log.* time.txt
+        rm -rf [1-9]* [0-9]*.[0-9]* postProcessing polyMesh log.* time.txt
         blockMesh > log.blockMesh 2>&1 || { echo "$c blockMesh FAILED"; exit 1; }
 
         local t0 t1 rc steps end cont mag pfin
