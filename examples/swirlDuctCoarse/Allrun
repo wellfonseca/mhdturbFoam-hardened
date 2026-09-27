@@ -1,0 +1,54 @@
+#!/bin/sh
+cd "${0%/*}" || exit 1
+
+#------------------------------------------------------------------------------
+# Allrun - swirlDuctCoarse (integration test, serial)
+#
+#   geometry        : 60-sided polygonal duct, 2.5 m long, R = 0.0762 m
+#   mesh            : GENERATED here (blockMesh + snappyHexMesh), ~20k cells
+#   turbulence      : k-omega SST
+#   magnetic field  : B = (0 0 -10) (spanwise, uniform)
+#   solver          : mhdturbFoam (mhdturbFoam-hardened)
+#   run time        : ~1 minute serial
+#
+# This is NOT a verification case: there is no exact solution. It is a smoke
+# test that exercises the paths the analytical Hartmann cases do not cover --
+# a RAS turbulence model (turbulence->divDevReff with kOmegaSST), the
+# swirlFlowRateInletVelocity inlet and the polygonal wall.
+#
+# Source the OpenFOAM 6 environment before running.
+#------------------------------------------------------------------------------
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+APP=$(foamDictionary -entry application -value system/controlDict)
+
+echo "Allrun: $APP | swirlDuctCoarse"
+
+if [ ! -f constant/triSurface/poligono.stl ]; then
+    echo "ERRO: constant/triSurface/poligono.stl nao encontrado." ; exit 1
+fi
+if ! command -v "$APP" > /dev/null 2>&1; then
+    echo "ERRO: solver '$APP' nao esta no PATH. Carregue o ambiente do OpenFOAM." ; exit 1
+fi
+
+# --- mesh generation ----------------------------------------------------------
+# Cartesian background block, feature extraction from the STL, then
+# castellation/snapping onto the 60-sided polygon.
+runApplication blockMesh
+
+runApplication surfaceFeatureExtract
+
+runApplication snappyHexMesh -overwrite
+
+# snappyHexMesh names the surface patch after the surface ('poligono'); the
+# fields in 0/ expect 'wall'.
+if [ -f constant/polyMesh/boundary ]; then
+    sed -i 's/^    poligono$/    wall/' constant/polyMesh/boundary
+    runApplication checkMesh
+fi
+
+# --- solver (serial) ----------------------------------------------------------
+runApplication $APP
+
+echo "Allrun concluido: $APP (serial)."

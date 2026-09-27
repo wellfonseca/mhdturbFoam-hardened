@@ -69,10 +69,12 @@ mhdturbFoam-hardened/
 │   ├── magneticFieldErr.H      div(B) diagnostic
 │   ├── readBPISOControls.H     BPISO helpers
 │   └── Make/                   wmake files
-├── cases/
+├── cases/                      verification, with analytical metrics
 │   ├── channelHartmann/        2D Hartmann channel, transverse B = (0 20 0)
 │   ├── channelHartmannSpanwise/ same mesh, spanwise B = (0 0 -20)
 │   └── channelHartmannPeriodic/ streamwise-periodic, force-driven (fvOptions)
+├── examples/                   integration/smoke tests, no exact solution
+│   └── swirlDuctCoarse/        polygonal duct, k-omega SST, B = (0 0 -10), ~30 s
 ├── docs/
 │   ├── corrections.md          the three defects in detail, with evidence
 │   └── verification.md         generated metrics (verify.sh --report)
@@ -138,6 +140,14 @@ without floating-point errors:
 | channelHartmann | 0 | 400 | 1 | 9.99926e-10 | 9.8377e-10 | 9.99771e-07 | 9 |
 | channelHartmannSpanwise | 0 | 400 | 1 | 9.99795e-08 | 0 | 9.99957e-07 | 6 |
 | channelHartmannPeriodic | 0 | 5000 | 1 | 9.99946e-13 | 9.82596e-12 | 9.99981e-07 | 60 |
+
+`cases/` is verification: each case has an objective metric. `examples/` is
+different — those are integration/smoke tests with no exact solution, kept out
+of `verify.sh` on purpose. `examples/swirlDuctCoarse` exercises what the
+analytical cases cannot: a **RAS turbulence model** (k-omega SST through
+`turbulence->divDevReff`), the `swirlFlowRateInletVelocity` inlet and the
+polygonal duct wall. It runs in ~30 s serial and is documented in its own
+[`README`](examples/swirlDuctCoarse/README.md).
 
 ## Limitations
 
