@@ -1,5 +1,7 @@
 # mhdturbFoam-hardened
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23003542.svg)](https://doi.org/10.5281/zenodo.23003542)
+
 **A hardened redistribution of the FOSSEE `mhdturbFoam` turbulent MHD solver for
 OpenFOAM 6, with three numerical defects fixed and a verification suite.**
 
@@ -184,3 +186,21 @@ preserve [`NOTICE`](NOTICE). See also [`CITATION.cff`](CITATION.cff).
 
 If you use this package, please cite the upstream works listed in `NOTICE`
 together with the archived release of this package.
+
+## Citation
+
+Archived on Zenodo:
+
+* **Concept DOI** (all versions, always the latest):
+  [10.5281/zenodo.23003542](https://doi.org/10.5281/zenodo.23003542)
+* **Version 0.1.0**:
+  [10.5281/zenodo.23003543](https://doi.org/10.5281/zenodo.23003543)
+
+Cite the **concept DOI** to point at the latest version, or the **version DOI**
+to refer to exactly the results archived as 0.1.0.
+
+```
+Fonseca, W. da S. (2026). mhdturbFoam-hardened: a corrected redistribution of
+the FOSSEE mhdturbFoam turbulent MHD solver for OpenFOAM 6 (Version 0.1.0)
+[Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23003543
+```

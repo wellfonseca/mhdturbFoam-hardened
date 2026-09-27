@@ -15,6 +15,11 @@ abstract: >-
 type: software
 license: GPL-3.0-or-later
 repository-code: "https://github.com/wellfonseca/mhdturbFoam-hardened"
+doi: 10.5281/zenodo.23003543
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23003542
+    description: "Concept DOI — resolves to the latest version of this software"
 version: "0.1.0"
 date-released: "2026-09-27"
 keywords:
