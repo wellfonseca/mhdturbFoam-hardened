@@ -1,0 +1,57 @@
+cff-version: 1.2.0
+message: "If you use mhdturbFoam-hardened, please cite this archived release and the upstream works listed in the references and in the NOTICE file."
+title: "mhdturbFoam-hardened: a corrected redistribution of the FOSSEE mhdturbFoam turbulent MHD solver for OpenFOAM 6"
+abstract: >-
+  A hardened redistribution of the FOSSEE mhdturbFoam solver for incompressible
+  turbulent magnetohydrodynamic flows in OpenFOAM 6, in the full
+  magnetic-induction formulation inherited from OpenFOAM's mhdFoam. Three
+  numerical defects of the upstream derivative are corrected: the outer PISO
+  corrector loop is restored (so that the pFinal dictionary is actually
+  reached), the singular pB Poisson problem of closed or fully periodic domains
+  is given a reference cell, and fvOptions are coupled into the momentum
+  equation so that meanVelocityForce can drive a periodic channel. This is a
+  derived work: the physical formulation is not original and all upstream
+  projects are credited in the NOTICE file.
+type: software
+license: GPL-3.0-or-later
+repository-code: "https://github.com/wellfonseca/mhdturbFoam-hardened"
+version: "0.1.0"
+date-released: "2026-09-27"
+keywords:
+  - magnetohydrodynamics
+  - MHD
+  - OpenFOAM
+  - full induction formulation
+  - magnetic induction
+  - turbulence modelling
+  - computational fluid dynamics
+  - liquid metal
+  - Hartmann flow
+authors:
+  - family-names: Fonseca
+    given-names: Wellington da Silva
+    affiliation: "Mechanical Engineering Graduate Program, Federal University of Pará, Belém, Brazil"
+references:
+  - type: software
+    title: "OpenFOAM 6"
+    authors:
+      - name: "The OpenFOAM Foundation"
+    year: 2018
+    version: "6"
+    notes: "Base solver mhdFoam of the grpElectroMagneticsSolvers group, from which the formulation and structure of this solver originate."
+    url: "https://openfoam.org/version/6"
+  - type: software
+    title: "mhdturbFoam: an incompressible turbulent OpenFOAM solver for magnetohydrodynamic flows (FOSSEE case-study project)"
+    authors:
+      - family-names: Radhakrishnan
+        given-names: Rahul
+    year: 2019
+    notes: "FOSSEE, IIT Bombay; developed on OpenFOAM v1812. Upstream of the turbulent skeleton used here."
+  - type: software
+    title: "mhdturbFoamQS: a quasi-static MHD solver for OpenFOAM with non-uniform applied magnetic fields"
+    authors:
+      - family-names: Fonseca
+        given-names: Wellington da Silva
+    year: 2026
+    notes: "Companion solver for the non-uniform applied field case, which the full-induction formulation cannot handle."
+    url: "https://github.com/wellfonseca/mhdturbFoamQS"

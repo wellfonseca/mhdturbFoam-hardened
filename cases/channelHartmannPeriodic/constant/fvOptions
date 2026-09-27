@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+|   \\  /    A nd           | Version:  6                                     |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// The streamwise periodicity removes the inlet/outlet pressure difference, so
+// the flow is driven by an imposed mean velocity.  This exercises the fvOptions
+// coupling of the hardened solver: without fvOptions(U) in UEqn and without
+// fvOptions.constrain(UEqn) this case aborts.
+momentumSource
+{
+    type            meanVelocityForce;
+    selectionMode   all;
+    fields          (U);
+    Ubar            (1 0 0);
+    // a strong transverse field makes the hydraulic response fast; an
+    // under-relaxed force is required for stability
+    relaxation      0.2;
+}
+
+// ************************************************************************* //

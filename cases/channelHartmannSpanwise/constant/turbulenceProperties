@@ -1,0 +1,24 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Website:  https://openfoam.org                  |
+|   \\  /    A nd           | Version:  6                                     |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// The Hartmann channel is used here as a verification case, so the flow is
+// kept laminar.  For a turbulent run set simulationType RAS and add a
+// RASProperties dictionary (SpalartAllmaras, kEpsilon or kOmegaSST all
+// work unchanged; see the swirl cases in the companion package).
+simulationType  laminar;
+
+// ************************************************************************* //

@@ -1,0 +1,30 @@
+# OpenFOAM run products (the 0/ directory of each case is INPUT and is tracked)
+[1-9]/
+[1-9][0-9]*/
+# non-integer write times such as 0.5/, 1.5/ or 10.25/
+[0-9]*.[0-9]*/
+processor*/
+postProcessing/
+# generated meshes, at any depth (blockMesh output is never input)
+polyMesh/
+# post-processing and parallel output
+VTK/
+uniform/
+*.foam
+log.*
+time.txt
+*.e[0-9]*
+*.o[0-9]*
+__pycache__/
+
+# build products
+*.o
+*.so
+*.dep
+linux*/
+platforms/
+*.swp
+
+# exceptions: the 0/ directories of the cases are input
+!cases/*/0/
+!cases/*/0/**

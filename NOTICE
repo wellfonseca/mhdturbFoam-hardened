@@ -1,0 +1,72 @@
+# NOTICE — attribution and licensing
+
+`mhdturbFoam-hardened` is a **derived work**, not an original solver. The
+scientific formulation and the numerical structure belong to the upstream
+projects below. All of them must be credited in any publication or
+redistribution. Nothing in this package should be presented as a new MHD
+formulation.
+
+## 1. OpenFOAM
+
+The solver is built on OpenFOAM 6 (org), © 2011–2017 OpenFOAM Foundation,
+distributed under the GNU General Public License v3.0.
+
+- <https://openfoam.org/version/6>
+- In particular the base solver `mhdFoam` of the `grpElectroMagneticsSolvers`
+  group, from which the full magnetic-induction formulation, the Maxwell-stress
+  Lorentz term, the `pB` (B-PISO) loop and the `createFields`/`createPhiB`
+  structure originate. The file header and the Application/Description blocks of
+  `src/mhdturbFoam.C` are retained from that solver.
+
+## 2. `mhdturbFoam` — FOSSEE case-study project
+
+The turbulent variant redistributed here comes from:
+
+> **Rahul Radhakrishnan** (2019).
+> *Numerical study of flow of electrically conducting fluid over an airfoil.*
+> FOSSEE Case Study Project — CFD with OpenFOAM.
+> Vellore Institute of Technology, Vellore, India.
+> Developed on OpenFOAM v1812.
+
+FOSSEE (Free and Open Source Software for Education) is an initiative of
+IIT Bombay. The upstream `README.md` states that the solver is `mhdFoam` with
+"minor changes" and recommends a modified Spalart–Allmaras closure for MHD
+applications, citing:
+
+> D. C. Dietiker, K. A. Hoffmann (2003).
+> *Modified one-equation turbulence models for turbulent magnetohydrodynamic
+> flows.* Journal of Thermophysics and Heat Transfer 17(4):509–520.
+> <https://doi.org/10.2514/2.6796>
+
+The turbulent skeleton (`turbulence->divDevReff`, `singlePhaseTransportModel`,
+`createFvOptions.H`) and the support headers `createPhiB.H`, `createControl.H`,
+`magneticFieldErr.H` and `readBPISOControls.H` are redistributed unchanged from
+that project.
+
+## 3. What was changed here
+
+The only differences from the upstream `mhdturbFoam` are the three numerical
+corrections listed in `README.md` and detailed in `docs/corrections.md`:
+
+1. restoration of the outer PISO corrector loop;
+2. a reference level for the singular `pB` Poisson problem, read from the
+   `BPISO` dictionary;
+3. `fvOptions` coupling (`fvOptions(U)` and `fvOptions.constrain(UEqn)`) in the
+   momentum equation.
+
+Plus the packaging: build files, three verification cases, the verification
+script and this documentation.
+
+## 4. Related solver
+
+For applied fields that are **non-uniform** the full-induction formulation in
+this package is not usable; use the quasi-static electric-potential solver:
+
+> W. da S. Fonseca. *mhdturbFoamQS: a quasi-static MHD solver for OpenFOAM with
+> non-uniform applied magnetic fields.* <https://github.com/wellfonseca/mhdturbFoamQS>
+
+## 5. Licence
+
+Because all upstream components are GPL v3, `mhdturbFoam-hardened` **must** be
+distributed under the GNU General Public License v3.0 (see `LICENSE`). Any
+redistribution must preserve this notice and the licence.
