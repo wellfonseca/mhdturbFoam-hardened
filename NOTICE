@@ -68,8 +68,9 @@ modification is a dictionary coefficient, not a change to the model code.
 For applied fields that are **non-uniform** the full-induction formulation in
 this package is not usable; use the quasi-static electric-potential solver:
 
-> W. da S. Fonseca. *mhdturbFoamQS: a quasi-static MHD solver for OpenFOAM with
+> W. S. Fonseca. *mhdturbFoamQS: a quasi-static MHD solver for OpenFOAM with
 > non-uniform applied magnetic fields.* <https://github.com/wellfonseca/mhdturbFoamQS>
+> (ORCID 0000-0002-2602-1964)
 
 ## 5. Licence
 

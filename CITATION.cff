@@ -34,8 +34,9 @@ keywords:
   - Hartmann flow
 authors:
   - family-names: Fonseca
-    given-names: Wellington da Silva
-    affiliation: "Mechanical Engineering Graduate Program, Federal University of Pará, Belém, Brazil"
+    given-names: W. S.
+    affiliation: "Universidade Federal do Pará"
+    orcid: "https://orcid.org/0000-0002-2602-1964"
 references:
   - type: software
     title: "OpenFOAM 6"
@@ -56,7 +57,9 @@ references:
     title: "mhdturbFoamQS: a quasi-static MHD solver for OpenFOAM with non-uniform applied magnetic fields"
     authors:
       - family-names: Fonseca
-        given-names: Wellington da Silva
+        given-names: W. S.
+        affiliation: "Universidade Federal do Pará"
+        orcid: "https://orcid.org/0000-0002-2602-1964"
     year: 2026
     notes: "Companion solver for the non-uniform applied field case, which the full-induction formulation cannot handle."
     url: "https://github.com/wellfonseca/mhdturbFoamQS"

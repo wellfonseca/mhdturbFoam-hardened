@@ -200,7 +200,9 @@ Cite the **concept DOI** to point at the latest version, or the **version DOI**
 to refer to exactly the results archived as 0.1.0.
 
 ```
-Fonseca, W. da S. (2026). mhdturbFoam-hardened: a corrected redistribution of
+Fonseca, W. S. (2026). mhdturbFoam-hardened: a corrected redistribution of
 the FOSSEE mhdturbFoam turbulent MHD solver for OpenFOAM 6 (Version 0.1.0)
 [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23003543
 ```
+
+ORCID: [0000-0002-2602-1964](https://orcid.org/0000-0002-2602-1964)
